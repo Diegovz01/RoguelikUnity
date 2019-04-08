@@ -1,0 +1,10 @@
+
+1. Poner el texto en un metodo
+Player
+Mensejes de food
+
+no repetir codigo
+
+2. --Ejercicio--
+
+boton para retornar el inicio

@@ -51,13 +51,23 @@ public abstract class _MovingObject : MonoBehaviour
     }
     
     protected abstract void OnCantMove(GameObject go);
+    // abstract => obligatorio en clase a heredar
+    protected virtual void OnCanMove(){}
+    // virtual => no obligatorio
 
+    // AttemptMove => Intento de movimiento
     protected virtual void AttemptMove(int xDir, int yDir) // uso de genericos
     { // virtual para sobrescribirlo
         RaycastHit2D hit;
         bool canMove = Move(xDir, yDir, out hit);
-        if (canMove) return;
 
-        OnCantMove(hit.transform.gameObject);
+        if (canMove)
+        {
+            OnCanMove();
+        } 
+        else
+        {
+            OnCantMove(hit.transform.gameObject);
+        } 
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class _Wall : MonoBehaviour
 {
+    public AudioClip chopSound1, chopSound2;
+
     public Sprite dmgSprite;
     public int hp = 4;
     private SpriteRenderer spriteRenderer;
@@ -14,6 +16,7 @@ public class _Wall : MonoBehaviour
 
     public void DamageWall(int loss)
     {
+        _SoundManager.instance.RandomizeSfx(chopSound1, chopSound2);
         spriteRenderer.sprite = dmgSprite;
         hp -= loss;
         if(hp <= 0)
