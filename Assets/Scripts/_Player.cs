@@ -45,6 +45,7 @@ public class _Player : _MovingObject
             _SoundManager.instance.PlaySingle(gameOverSound);
             _SoundManager.instance.musicSource.Stop();
             _GameManager.sharedInstance.GameOver();
+            food = 100;
         }
     }
 
@@ -126,7 +127,8 @@ public class _Player : _MovingObject
     public void LoseFood(int loss)
     {
         food -= loss;
-        foodText.text = "-" + loss + "Food: " + food;
+        //foodText.text = "-" + loss + "Food: " + food;
+        PrintText("-"," Food: ",loss);
         animator.SetTrigger("playerHit");
         CheckIfGameOver();
     }
@@ -142,15 +144,22 @@ public class _Player : _MovingObject
         {
             food += pointsPerFood;
             _SoundManager.instance.RandomizeSfx(eatSound1, eatSound2);
-            foodText.text = "+" + pointsPerFood + "Food: " + food;
+            //foodText.text = "+" + pointsPerFood + "Food: " + food;
+            PrintText("+"," Food: ",pointsPerFood);
             other.gameObject.SetActive(false);
         }
         else if (other.CompareTag("Soda"))
         {
             food += pointsPerSoda;
             _SoundManager.instance.RandomizeSfx(drinkSound1, drinkSound2);
-            foodText.text = "+" + pointsPerSoda + "Food: " + food;
+            //foodText.text = "+" + pointsPerSoda + "Food: " + food;
+            PrintText("+"," Food: ",pointsPerSoda);
             other.gameObject.SetActive(false);
         }
+    }
+
+    void PrintText(string a, string b, int unidad)
+    {
+        foodText.text = a + unidad + b + food;
     }
 }

@@ -19,8 +19,10 @@ public class _GameManager : MonoBehaviour
     private bool enemiesMoving;
 
     private int level = 0;
-    private GameObject levelImage;
+    int recordLevel;
+    private GameObject levelImage, rePlayButton;
     private Text levelText;
+    Text recordLevelText;
     public bool doigSetup;
 
     private void Awake()
@@ -36,22 +38,24 @@ public class _GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         boardScript = GetComponent<_BoardManager>();
-    }
-    /*
-    // Start is called before the first frame update
-    void Start()
-    {
-        InitGame();
-        //GameObject.FindGameObjectsWithTag("Enemy");
-    }*/
 
-    private void InitGame()
+        recordLevelText = GameObject.Find("RecordLevelText").GetComponent<Text>();
+    }
+
+    public void InitGame()
     {
+        recordLevel = PlayerPrefs.GetInt("RecordLevel",0);
+
         doigSetup = true;
         levelImage = GameObject.Find("LevelImage");
+        rePlayButton = GameObject.Find("Replay_Button");
         levelText = GameObject.Find("LevelText").GetComponent<Text>();
+        recordLevelText = GameObject.Find("RecordLevelText").GetComponent<Text>();
+
         levelText.text = "Day " + level;
+        recordLevelText.text = "Record Days: " + recordLevel;
         levelImage.SetActive(true);
+        rePlayButton.SetActive(false);
 
         enemies.Clear(); // Limpiar lista de enemies
         boardScript.SetUpScene(level);
@@ -69,6 +73,7 @@ public class _GameManager : MonoBehaviour
     {
         levelText.text = "After \"" + level + "\" days,\n you starved.";
         levelImage.SetActive(true);
+        rePlayButton.SetActive(true);
         enabled = false;
     }
 
@@ -111,9 +116,19 @@ public class _GameManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnLevelFinishedLoading;
     }
 
-    void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+    public void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         level++;
+        if(level > recordLevel)
+        {
+            PlayerPrefs.SetInt("RecordLevel", level);
+            recordLevel = PlayerPrefs.GetInt("RecordLevel");
+        }
         InitGame();
+    }
+    public void ResetGame()
+    {
+        level = 0;
+        playerFoodPoints = 100;
     }
 }
